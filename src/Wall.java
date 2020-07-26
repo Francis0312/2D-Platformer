@@ -1,7 +1,4 @@
 import java.awt.Rectangle;
-
-import jdk.internal.jline.internal.TestAccessible;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 
