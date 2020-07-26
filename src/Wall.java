@@ -4,8 +4,10 @@ import java.awt.Graphics2D;
 
 /**
  * 
- * 
+ * @author Francisco Reyna
+ * University of Texas at Austin - Computer Science
  */
+
 
 public class Wall {
     
@@ -16,13 +18,12 @@ public class Wall {
     public Rectangle hitBox;
     private Color wallColor;
 
-    public Wall(int x, int y, int width, int height, Color wallColor) {
+    public Wall(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         hitBox = new Rectangle(x, y, width, height);
-        this.wallColor = wallColor;
     }
     
 

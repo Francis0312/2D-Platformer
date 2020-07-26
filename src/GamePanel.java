@@ -9,7 +9,10 @@ import java.awt.event.KeyEvent;
 
 /**
  * 
+ * @author Francisco Reyna
+ * University of Texas at Austin - Computer Science
  */
+
 
 public class GamePanel extends JPanel implements ActionListener {
     

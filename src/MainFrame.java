@@ -1,7 +1,13 @@
 import javax.swing.JFrame;
 import java.awt.Color;
 
+/**
+ * 
+ * @author Francisco Reyna
+ * University of Texas at Austin - Computer Science
+ */
 
+ 
 public class MainFrame extends JFrame {
 
     //Constants

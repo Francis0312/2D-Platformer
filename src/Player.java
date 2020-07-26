@@ -4,7 +4,10 @@ import java.awt.Graphics2D;
 
 /**
  * 
+ * @author Francisco Reyna
+ * University of Texas at Austin - Computer Science
  */
+
 
 public class Player {
 
