@@ -1,8 +1,3 @@
-## An Introduction
-
-
-
-
 ## The Project Files
 
 - `Player`: The Player class that holds the hitbox, speed, and information.

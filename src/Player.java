@@ -19,7 +19,8 @@ public class Player {
 
     // Instance Variables
     private GamePanel panel;
-    private Color playerColor = new Color(191, 87, 0);;
+    private Color playerColor = new Color(191, 87, 0);
+    private int lives;
 
     // Used for the player's movement and position.
     private int x;
@@ -41,9 +42,11 @@ public class Player {
         this.panel = panel;
         this.x = x;
         this.y = y;
+        lives = 3;
         width = 50;
         height = 100;
         hitBox = new Rectangle(x, y, width, height);
+
     }
 
 
@@ -80,7 +83,7 @@ public class Player {
         // Jumping, only allowed to jump when you are right above the ground.
         if(keyUp) {
             hitBox.y++;
-            for(Wall wall: panel.walls) {
+            for(Wall wall: panel.getWallsArray()) {
                 if(wall.getHitBox().intersects(hitBox)) {
                     ySpeed = JUMP_ACCEL;
                 }
@@ -92,7 +95,7 @@ public class Player {
 
         // Horizontal & Vertical collisions
         hitBox.x += xSpeed;
-        for(Wall wall: panel.walls) {
+        for(Wall wall: panel.getWallsArray()) {
             if(hitBox.intersects(wall.getHitBox())) {
                 hitBox.x -= xSpeed;
                 // While there is not a collision, then we can move until we are touching the wall
@@ -107,7 +110,7 @@ public class Player {
 
         // Vertical collisions
         hitBox.y += ySpeed;
-        for(Wall wall: panel.walls) {
+        for(Wall wall: panel.getWallsArray()) {
             if(hitBox.intersects(wall.getHitBox())) {
                 hitBox.y -= ySpeed;
                 // While there is not a collision, then we can move until we are touching the wall
@@ -127,6 +130,16 @@ public class Player {
         // We move the hitBox along with the Player.
         hitBox.x = x;
         hitBox.y = y;
+    }
+
+
+    public int getLives() {
+        return lives;
+    }
+
+
+    public void setLives(int lives) {
+        this.lives = lives;
     }
 
 

@@ -18,6 +18,7 @@ public class Wall {
     private Rectangle hitBox;
     private Color fillColor;
     private Color outlineColor; 
+    private boolean isEnemy;
 
     // Wall that makes up the scenery
     public Wall(int x, int y, int width, int height) {
@@ -25,6 +26,7 @@ public class Wall {
         this.y = y;
         this.width = width;
         this.height = height;
+        isEnemy = false;
         hitBox = new Rectangle(x, y, width, height);
         fillColor = Color.WHITE;
         outlineColor = Color.BLACK;
@@ -35,7 +37,16 @@ public class Wall {
     public Rectangle getHitBox() {
         return hitBox;
     }
+
+
+    public boolean getIsEnemy() {
+        return isEnemy;
+    }
     
+
+    public void setIsEnemy(boolean isEnemy) {
+        this.isEnemy = isEnemy;
+    }
 
     /**
      * Draws the wall Object onto the JPanel environment

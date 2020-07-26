@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import javax.swing.JLabel;
 
 /**
  * 
@@ -16,12 +17,13 @@ import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements ActionListener {
     
-    public Player player;
-    public Timer gameTimer;
-    public int delay = 0;
+    private Player player;
+    private Timer gameTimer;
+    private int delay = 0;
     //1000 ms / 17 ms = ~60 fps
-    public int fps = 17;
-    ArrayList<Wall> walls = new ArrayList<Wall>();
+    private int fps = 17;
+    private ArrayList<Wall> walls = new ArrayList<Wall>();
+    private JLabel livesLine;
 
     // Constructs a new instance of the game, by initializing the primary JPanel.
     public GamePanel() {
@@ -35,18 +37,28 @@ public class GamePanel extends JPanel implements ActionListener {
                 repaint();
             }
         }, delay, fps);
+        livesLine = new JLabel("Lives: " + player.getLives());
+        add(livesLine);
+        livesLine.setBounds(20, 20, 80, 40);
+
         makeWalls();
     }
 
 
     /**
-     * 
+     * Creates wall objects on the map
      */
     public void makeWalls() {
         for(int i = 50; i < 650; i+=50) {
             walls.add(new Wall(i, 600, 50, 50));
         }
         walls.add(new Wall(50, 550, 50, 50));
+        walls.add(new LavaWall(200, 550, 50, 50));
+    }
+
+
+    public ArrayList<Wall> getWallsArray() {
+        return walls;
     }
 
 
@@ -104,7 +116,7 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
 
-    // 
+    // Required method for ActionEvent's implementation
     public void actionPerformed(ActionEvent e) {}
     
 }
