@@ -7,12 +7,12 @@ import java.awt.Color;
  * University of Texas at Austin - Computer Science
  */
 
- 
 public class MainFrame extends JFrame {
 
-    //Constants
+    // Constants
     private static Color BACKGROUND_COLOR = Color.BLACK;
-    
+   
+    // Constructs the main JFrame of the project
     public MainFrame() {
         GamePanel panel = new GamePanel();
         panel.setLocation(0,0);
@@ -20,7 +20,6 @@ public class MainFrame extends JFrame {
         panel.setBackground(BACKGROUND_COLOR);
         panel.setVisible(true);
         this.add(panel);
-
         addKeyListener(new KeyChecker(panel));
     }
     

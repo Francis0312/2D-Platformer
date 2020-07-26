@@ -8,7 +8,6 @@ import java.awt.Graphics2D;
  * University of Texas at Austin - Computer Science
  */
 
-
 public class Player {
 
     // Constants
@@ -37,6 +36,7 @@ public class Player {
     public boolean keyUp;
     public boolean keyDown;
     
+    // Constructs a player. Only one is allowed though.
     public Player(int x, int y, GamePanel panel) {
         this.panel = panel;
         this.x = x;
@@ -77,14 +77,48 @@ public class Player {
             xSpeed = -1 * MAX_SPEED;
         }
 
-        // Jumping
+        // Jumping, only allowed to jump when you are right above the ground.
         if(keyUp) {
-            //Check if touching ground
-            ySpeed = JUMP_ACCEL;
-
+            hitBox.y++;
+            for(Wall wall: panel.walls) {
+                if(wall.getHitBox().intersects(hitBox)) {
+                    ySpeed = JUMP_ACCEL;
+                }
+            }
+            hitBox.y--;
         }
         // Gravity
         ySpeed += GRAVITY;
+
+        // Horizontal & Vertical collisions
+        hitBox.x += xSpeed;
+        for(Wall wall: panel.walls) {
+            if(hitBox.intersects(wall.getHitBox())) {
+                hitBox.x -= xSpeed;
+                // While there is not a collision, then we can move until we are touching the wall
+                while(!wall.getHitBox().intersects(hitBox)) {
+                    hitBox.x += Math.signum(xSpeed);
+                }
+                hitBox.x -= Math.signum(xSpeed);
+                xSpeed = 0;
+                x = hitBox.x;
+            }
+        }
+
+        // Vertical collisions
+        hitBox.y += ySpeed;
+        for(Wall wall: panel.walls) {
+            if(hitBox.intersects(wall.getHitBox())) {
+                hitBox.y -= ySpeed;
+                // While there is not a collision, then we can move until we are touching the wall
+                while(!wall.getHitBox().intersects(hitBox)) {
+                    hitBox.y += Math.signum(ySpeed);
+                }
+                hitBox.y -= Math.signum(ySpeed);
+                ySpeed = 0;
+                y = hitBox.y;
+            }
+        }
 
         // Move the player's position.
         x += xSpeed;
@@ -96,6 +130,10 @@ public class Player {
     }
 
 
+    /**
+     * Updates the JPanel's graphics on every frame.
+     * @param gtd The Graphics2D Object that draws onto the GUI.
+     */
     public void draw(Graphics2D gtd) {
         gtd.setColor(playerColor);
         gtd.fillRect(x, y, width, height);
