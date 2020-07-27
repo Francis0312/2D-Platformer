@@ -41,14 +41,25 @@ public class GamePanel extends JPanel implements ActionListener {
         add(livesLine);
         livesLine.setBounds(20, 20, 80, 40);
 
-        makeWalls();
+        makeWalls(50);
+    }
+
+
+    public void reset() {
+        player.setX(200);
+        player.setY(150);
+        player.setXSpeed(0);
+        player.setYSpeed(0);
+        walls.clear();
+        int offset = 50;
+        makeWalls(offset);
     }
 
 
     /**
      * Creates wall objects on the map
      */
-    public void makeWalls() {
+    public void makeWalls(int offset) {
         for(int i = 50; i < 650; i+=50) {
             walls.add(new Wall(i, 600, 50, 50));
         }
@@ -57,6 +68,7 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
 
+    //
     public ArrayList<Wall> getWallsArray() {
         return walls;
     }

@@ -133,11 +133,13 @@ public class Player {
     }
 
 
+    // Returns the amount of lives
     public int getLives() {
         return lives;
     }
 
 
+    // Sets the amount of lives
     public void setLives(int lives) {
         this.lives = lives;
     }
@@ -152,4 +154,54 @@ public class Player {
         gtd.fillRect(x, y, width, height);
         
     }
+
+    // --- GETTERS & SETTERS ---
+
+     // Returns player's X
+     public int getX() {
+        return x;
+    }
+
+
+    // Returns player's Y
+    public int getY() {
+        return y;
+    }
+
+
+    // Sets player's X
+    public void setX(int x) {
+        this.x = x;
+    }
+
+
+    // Sets player's Y
+    public void setY(int y) {
+        this.y = y;
+    }
+
+
+    // Returns the X Speed
+    public double getXSpeed() {
+        return xSpeed;
+    }
+
+    
+    // Returns the Y Speed
+    public double getYSpeed() {
+        return ySpeed;
+    }
+
+
+    // Sets the player's X speed
+    public void setXSpeed(double xSpeed) {
+        this.xSpeed = xSpeed;
+    }
+
+
+    // Sets the player's Y speed
+    public void setYSpeed(double ySpeed) {
+        this.ySpeed = ySpeed;
+    }
+
 }

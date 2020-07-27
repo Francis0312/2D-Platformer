@@ -39,11 +39,13 @@ public class Wall {
     }
 
 
+    // Returns whether or not the wall is an enemy
     public boolean getIsEnemy() {
         return isEnemy;
     }
     
 
+    // Sets whether or not the wall is an enemy
     public void setIsEnemy(boolean isEnemy) {
         this.isEnemy = isEnemy;
     }
