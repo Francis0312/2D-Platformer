@@ -10,7 +10,7 @@ import java.awt.Color;
 public class MainFrame extends JFrame {
 
     // Constants
-    private static Color BACKGROUND_COLOR = Color.CYAN;
+    private static Color BACKGROUND_COLOR = new Color(135, 206, 235);
    
     // Constructs the main JFrame of the project
     public MainFrame() {

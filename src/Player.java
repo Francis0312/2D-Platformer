@@ -1,6 +1,9 @@
 import java.awt.Rectangle;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * 
@@ -14,9 +17,10 @@ public class Player {
     private static double SPEED_MULTIPLIER = 0.8;
     private static double PLAYER_ACCELERATION = 1.0;
     private static double MAX_SPEED = 7.0;
-    private static double JUMP_ACCEL = -6;
+    private static double JUMP_ACCEL = -8;
     private static double GRAVITY = 0.3;
     private static int DEATH_LINE = 800;
+    private static int START_LIVES = 3;
 
     // Instance Variables
     private GamePanel panel;
@@ -43,10 +47,24 @@ public class Player {
         this.panel = panel;
         this.x = x;
         this.y = y;
-        lives = 3;
+        lives = START_LIVES;
         width = 50;
         height = 100;
         hitBox = new Rectangle(x, y, width, height);
+
+        // Creating our custom retro gaming font
+        try {
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, 
+            new File("Retro Gaming.ttf")).deriveFont(12f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(customFont);
+        } catch (IOException e) {
+            System.out.println("ERROR: Coult not load Font File.");
+            e.printStackTrace();
+        } catch(FontFormatException e) {
+            System.out.println("ERROR: Failed to create Font.");
+            e.printStackTrace();
+        }            
 
     }
 
@@ -160,7 +178,10 @@ public class Player {
     public void draw(Graphics2D gtd) {
         gtd.setColor(playerColor);
         gtd.fillRect(x, y, width, height);
-        gtd.drawString(Integer.toString(x), 50, 50);
+        gtd.setColor(Color.BLACK);
+        gtd.setFont(new Font("Retro Gaming", Font.PLAIN, 20));
+        lives = START_LIVES - panel.getNumResets();
+        gtd.drawString("LIVES: " + lives, 30, 30);
     }
 
     // --- GETTERS & SETTERS ---
