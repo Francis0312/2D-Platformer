@@ -45,7 +45,6 @@ public class GamePanel extends JPanel implements ActionListener {
                 if(walls.get(walls.size() - 1).x < 800) {
                     offset += 700;
                     makeWalls(offset);
-                    System.out.println(walls.size());
                 }
                 player.set();
                 for(Wall wall: walls) {
@@ -92,7 +91,7 @@ public class GamePanel extends JPanel implements ActionListener {
     public void makeWalls(int offset) {
         int length = 50;
         Random rand = new Random();
-        int index = rand.nextInt(4);
+        int index = rand.nextInt(7);
         int xOffset = 0;
         int limit = 6;
         int gap = 150;
@@ -131,6 +130,7 @@ public class GamePanel extends JPanel implements ActionListener {
                     walls.add(new Wall(xOffset + offset + i * 50, 550, length, length));
                 }
                 break;
+            // 3 platforms,  _ - _ 
             case 3:
                 xOffset = 100;
                 makeLineWalls(walls, 3, 550, length, xOffset, offset);
@@ -139,6 +139,43 @@ public class GamePanel extends JPanel implements ActionListener {
                 makeLineWalls(walls, 3, 450, length, xOffset, offset);
                 xOffset += 250;
                 makeLineWalls(walls, 3, 550, length, xOffset, offset);
+                break;
+            // Floating individual blocks
+            case 4: 
+                xOffset = 100;
+                walls.add(new Wall(xOffset + offset, 500, length, length));
+                xOffset += 150;
+                walls.add(new Wall(xOffset + offset, 400, length, length));
+                xOffset += 150;
+                walls.add(new Wall(xOffset + offset, 300, length, length));
+                xOffset += 200;
+                walls.add(new Wall(xOffset + offset, 350, length, length));
+                break;
+            // Tunnel
+            case 5:
+                xOffset = 100;
+                makeLineWalls(walls, 12, 600, length, xOffset, offset);
+                xOffset = 150;
+                makeLineWalls(walls, 10, 450, length, xOffset, offset);
+                xOffset = 200;
+                makeLineWalls(walls, 8, 300, length, xOffset, offset);
+                xOffset = 250;
+                makeLineWalls(walls, 6, 150, length, xOffset, offset);
+                break;
+            case 6:
+            // Yes No Yes No Yes No.. pattern of individual blocks close to the ground
+                xOffset = 100;
+                boolean nextSpace = false;
+                for(int i = 0; i < 12; i++) {
+                    if(!nextSpace) {
+                        walls.add(new Wall(xOffset + offset, 550, length, length));   
+                        nextSpace = !nextSpace; 
+                    } else {
+                        nextSpace = !nextSpace; 
+                    }
+                    xOffset += length;
+                }
+                break;
                 
         }
     }
