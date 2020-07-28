@@ -16,6 +16,7 @@ public class Player {
     private static double MAX_SPEED = 7.0;
     private static double JUMP_ACCEL = -6;
     private static double GRAVITY = 0.3;
+    private static int DEATH_LINE = 800;
 
     // Instance Variables
     private GamePanel panel;
@@ -103,8 +104,9 @@ public class Player {
                     hitBox.x += Math.signum(xSpeed);
                 }
                 hitBox.x -= Math.signum(xSpeed);
+                panel.cameraX += x - hitBox.x;
                 xSpeed = 0;
-                x = hitBox.x;
+                hitBox.x = x;
             }
         }
 
@@ -124,12 +126,18 @@ public class Player {
         }
 
         // Move the player's position.
-        x += xSpeed;
         y += ySpeed; 
 
         // We move the hitBox along with the Player.
         hitBox.x = x;
         hitBox.y = y;
+
+        // Death code
+        if(y > DEATH_LINE) {
+            panel.reset();
+        }
+
+        panel.cameraX -= xSpeed;
     }
 
 
@@ -152,7 +160,7 @@ public class Player {
     public void draw(Graphics2D gtd) {
         gtd.setColor(playerColor);
         gtd.fillRect(x, y, width, height);
-        
+        gtd.drawString(Integer.toString(x), 50, 50);
     }
 
     // --- GETTERS & SETTERS ---
@@ -202,6 +210,12 @@ public class Player {
     // Sets the player's Y speed
     public void setYSpeed(double ySpeed) {
         this.ySpeed = ySpeed;
+    }
+
+
+    // Returns the player's hitbox object
+    public Rectangle getHitbox() {
+        return hitBox;
     }
 
 }

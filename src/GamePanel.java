@@ -7,6 +7,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Random;
+
 import javax.swing.JLabel;
 
 /**
@@ -24,34 +26,64 @@ public class GamePanel extends JPanel implements ActionListener {
     private int fps = 17;
     private ArrayList<Wall> walls = new ArrayList<Wall>();
     private JLabel livesLine;
+    public int cameraX;
+    private int offset;
 
     // Constructs a new instance of the game, by initializing the primary JPanel.
     public GamePanel() {
-        player = new Player(400, 300, this);
+        player = new Player(0, 300, this);
+        reset();
         gameTimer = new Timer();
-        gameTimer.schedule(new TimerTask(){
+        gameTimer.schedule(new TimerTask() {
             
             @Override
             public void run() {
+                
+                // If the farthest wall to the x, then it's about to be on screen (screen is 700)
+                if(walls.get(walls.size() - 1).x < 800) {
+                    offset += 700;
+                    makeWalls(offset);
+                    System.out.println(walls.size());
+                }
                 player.set();
+                for(Wall wall: walls) {
+                    wall.set(cameraX);
+                }
+                //removeWalls(walls);
+
                 repaint();
             }
         }, delay, fps);
+
         livesLine = new JLabel("Lives: " + player.getLives());
         add(livesLine);
         livesLine.setBounds(20, 20, 80, 40);
-
-        makeWalls(50);
+        
     }
 
 
+    /**
+     * 
+     * @param walls
+     */
+    public static void removeWalls(ArrayList<Wall> walls) {
+        for(int i = 0; i < walls.size(); i++) {
+            if(walls.get(i).x < -800) {
+                walls.remove(i);
+            }
+        }
+    }
+
+
+    // Resets everything when the player dies.
     public void reset() {
-        player.setX(200);
+        player.setX((int)(700 / 2 - player.getHitbox().getWidth()));
         player.setY(150);
+        cameraX = 150;
         player.setXSpeed(0);
         player.setYSpeed(0);
         walls.clear();
-        int offset = 50;
+        offset = -150;
         makeWalls(offset);
     }
 
@@ -60,15 +92,22 @@ public class GamePanel extends JPanel implements ActionListener {
      * Creates wall objects on the map
      */
     public void makeWalls(int offset) {
-        for(int i = 50; i < 650; i+=50) {
-            walls.add(new Wall(i, 600, 50, 50));
+        int length = 50;
+        Random rand = new Random();
+        int index = rand.nextInt(1);
+
+        switch(index) { 
+            case 0:
+                for(int i = 0; i < 14; i++) {
+                    walls.add(new Wall(offset + i * 50, 600, length, length));
+                }
+                break;
+
         }
-        walls.add(new Wall(50, 550, 50, 50));
-        walls.add(new LavaWall(200, 550, 50, 50));
     }
 
 
-    //
+    // Returns the ArrayList of walls
     public ArrayList<Wall> getWallsArray() {
         return walls;
     }
@@ -130,5 +169,5 @@ public class GamePanel extends JPanel implements ActionListener {
 
     // Required method for ActionEvent's implementation
     public void actionPerformed(ActionEvent e) {}
-    
+
 }

@@ -19,10 +19,12 @@ public class Wall {
     private Color fillColor;
     private Color outlineColor; 
     private boolean isEnemy;
+    private int startX;
 
     // Wall that makes up the scenery
     public Wall(int x, int y, int width, int height) {
         this.x = x;
+        startX = x;
         this.y = y;
         this.width = width;
         this.height = height;
@@ -50,6 +52,7 @@ public class Wall {
         this.isEnemy = isEnemy;
     }
 
+
     /**
      * Draws the wall Object onto the JPanel environment
      */
@@ -59,5 +62,13 @@ public class Wall {
         gtd.setColor(fillColor);
         //Offset to fit slightly inside of the previously drawn Rectangle
         gtd.fillRect(x + 1, y + 1, width - 2, height - 2);
+    }
+
+
+    public int set(int cameraX) {
+        x = startX + cameraX;
+        hitBox.x = x;
+
+        return x;
     }
 }
