@@ -4,6 +4,11 @@ import java.awt.Graphics2D;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+
 
 /**
  * 
@@ -41,6 +46,11 @@ public class Player {
     public boolean keyRight;
     public boolean keyUp;
     public boolean keyDown;
+
+    // Character Graphics 
+    private BufferedImage genjiRight;
+    private BufferedImage genjiLeft;
+    private boolean isAcceleratingRight;
     
     // Constructs a player. Only one is allowed though.
     public Player(int x, int y, GamePanel panel) {
@@ -59,13 +69,45 @@ public class Player {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(customFont);
         } catch (IOException e) {
-            System.out.println("ERROR: Coult not load Font File.");
+            System.out.println("ERROR: Could not load Font File.");
             e.printStackTrace();
         } catch(FontFormatException e) {
             System.out.println("ERROR: Failed to create Font.");
             e.printStackTrace();
         }            
 
+        // Creating an image for our player.
+        genjiRight = null;
+        genjiLeft = null;
+        double scale = .075;
+        try {
+            genjiRight = ImageIO.read(new File("genjiRight.png")); 
+            genjiLeft = ImageIO.read(new File("genjiLeft.png"));
+            genjiRight = scaleDown(genjiRight, scale);
+            genjiLeft = scaleDown(genjiLeft,scale);
+        } catch (IOException e) {
+            System.out.println("ERROR: Failed to load player images.");
+        }
+
+    }
+
+
+
+    /**
+     * Scales down the image by a factor of double scale
+     * @param img The Image that will be resized
+     * @param scale The scale that the image will be resized by
+     * @return The newly resized image
+     */
+    public static BufferedImage scaleDown(BufferedImage img, double scale) {
+        int w = img.getWidth();
+        int h = img.getHeight();
+        BufferedImage after = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        AffineTransform at = new AffineTransform();
+        at.scale(scale, scale);
+        AffineTransformOp scaleOp = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
+        after = scaleOp.filter(img, after);
+        return after;
     }
 
 
@@ -78,8 +120,10 @@ public class Player {
             xSpeed *= SPEED_MULTIPLIER;
         } else if(keyLeft && !keyRight) {
             xSpeed = xSpeed - PLAYER_ACCELERATION;
+            this.isAcceleratingRight = false;
         } else if(keyRight && !keyLeft) {
             xSpeed = xSpeed + PLAYER_ACCELERATION;
+            this.isAcceleratingRight = true;
         }
 
         // If the player moves sufficiently slowly, make him stand still instead. This is to prevent 
@@ -177,13 +221,22 @@ public class Player {
      */
     public void draw(Graphics2D gtd) {
         gtd.setColor(playerColor);
-        gtd.fillRect(x, y, width, height);
+        // Uncomment this line to show the hitbox rectangle.
+        // gtd.drawRect(x, y, width, height);
+
+        if(this.isAcceleratingRight) {
+            gtd.drawImage(genjiRight, null, x, y + 3);
+        } else {
+            gtd.drawImage(genjiLeft, null, x - (int)hitBox.getWidth() + 10, y + 3);
+        }
+        
         gtd.setColor(Color.BLACK);
         gtd.setFont(new Font("Retro Gaming", Font.PLAIN, 20));
         lives = START_LIVES - panel.getNumResets();
         gtd.drawString("LIVES: " + lives, 30, 30);
     }
 
+    
     // --- GETTERS & SETTERS ---
 
      // Returns player's X

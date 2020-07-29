@@ -104,8 +104,7 @@ public class GamePanel extends JPanel implements ActionListener {
                 }
                 break;
             // Staircase jump
-            case 1:
-                
+            case 1:   
                 for(int height = 600; height > 400; height -= 50) {
                     for(int boxIndex = 0; boxIndex < limit; boxIndex++) {
                         walls.add(new Wall(offset + xOffset + boxIndex * 50, height, length, length));     
