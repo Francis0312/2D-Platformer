@@ -26,10 +26,10 @@ public class Player {
     private static double GRAVITY = 0.3;
     private static int DEATH_LINE = 800;
     private static int START_LIVES = 3;
+    private Color playerColor = new Color(191, 87, 0);
 
     // Instance Variables
     private GamePanel panel;
-    private Color playerColor = new Color(191, 87, 0);
     private int lives;
 
     // Used for the player's movement and position.
@@ -77,8 +77,6 @@ public class Player {
         }            
 
         // Creating an image for our player.
-        genjiRight = null;
-        genjiLeft = null;
         double scale = .075;
         try {
             genjiRight = ImageIO.read(new File("genjiRight.png")); 
@@ -236,7 +234,7 @@ public class Player {
         gtd.drawString("LIVES: " + lives, 30, 30);
     }
 
-    
+
     // --- GETTERS & SETTERS ---
 
      // Returns player's X
