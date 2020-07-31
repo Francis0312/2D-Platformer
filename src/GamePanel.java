@@ -37,7 +37,7 @@ public class GamePanel extends JPanel implements ActionListener {
             
             @Override
             public void run() {
-                
+                if(numResets > player.getStartLives() - 1);
                 // If the farthest wall to the x, then it's about to be on screen (screen is 700)
                 if(walls.get(walls.size() - 1).x < 800) {
                     offset += 700;
@@ -48,7 +48,6 @@ public class GamePanel extends JPanel implements ActionListener {
                     wall.set(cameraX);
                 }
                 //removeWalls(walls);
-
                 repaint();
             }
         }, delay, fpsDividend);

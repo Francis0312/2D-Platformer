@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
+import java.util.ArrayList;
 
 
 /**
@@ -51,6 +52,9 @@ public class Player {
     private BufferedImage genjiRight;
     private BufferedImage genjiLeft;
     private boolean isAcceleratingRight;
+
+    // Heart Images
+    private BufferedImage lifeHeart;
     
     // Constructs a player. Only one is allowed though.
     public Player(int x, int y, GamePanel panel) {
@@ -58,6 +62,7 @@ public class Player {
         this.x = x;
         this.y = y;
         lives = START_LIVES;
+
         width = 50;
         height = 100;
         hitBox = new Rectangle(x, y, width, height);
@@ -81,14 +86,16 @@ public class Player {
         try {
             genjiRight = ImageIO.read(new File("genjiRight.png")); 
             genjiLeft = ImageIO.read(new File("genjiLeft.png"));
+            lifeHeart = ImageIO.read(new File("pixel_heart.png"));
             genjiRight = scaleDown(genjiRight, scale);
             genjiLeft = scaleDown(genjiLeft,scale);
+            lifeHeart = scaleDown(lifeHeart, .008);
+            
         } catch (IOException e) {
             System.out.println("ERROR: Failed to load player images.");
         }
 
     }
-
 
 
     /**
@@ -222,12 +229,20 @@ public class Player {
         // Uncomment this line to show the hitbox rectangle.
         // gtd.drawRect(x, y, width, height);
 
+        // Draws out the Heart images for each life.
+        for(int i = 0; i < lives; i++) {
+            gtd.drawImage(lifeHeart, null, 30 + i * 30, 38);
+        }
+
+        // Displays genjiRight if the player is *accelerating* to the right
         if(this.isAcceleratingRight) {
             gtd.drawImage(genjiRight, null, x, y + 3);
         } else {
+            // And genjiLeft if the player is accelerating to the left
             gtd.drawImage(genjiLeft, null, x - (int)hitBox.getWidth() + 10, y + 3);
         }
         
+        // Prints out the text for the lives at the top left of the screen
         gtd.setColor(Color.BLACK);
         gtd.setFont(new Font("Retro Gaming", Font.PLAIN, 20));
         lives = START_LIVES - panel.getNumResets();
@@ -288,6 +303,12 @@ public class Player {
     // Returns the player's hitbox object
     public Rectangle getHitbox() {
         return hitBox;
+    }
+
+
+    // Returns the number of starting lives
+    public int getStartLives() {
+        return START_LIVES;
     }
 
 }
